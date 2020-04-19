@@ -79,8 +79,9 @@ namespace CurveEditor.UI
             this.parent = parent;
         }
 
-        public void PopulateMesh(VertexHelper vh, Matrix4x4 viewMatrix, Bounds viewBounds)
+        public void PopulateMesh(VertexHelper vh, Matrix4x4 viewMatrix, Bounds viewBounds, float maxT, float maxY)
         {
+            position = new Vector2(position.x / maxT * viewBounds.max.x, position.y / maxY * viewBounds.max.y);
             if (showHandles)
             {
                 vh.DrawLine(position, position + _outHandlePosition, _handleThickness, lineColor, viewMatrix);
@@ -107,7 +108,7 @@ namespace CurveEditor.UI
 
             if (!showHandles)
                 return false;
-           
+
             if (Vector2.Distance(point, position + _outHandlePosition) <= _handleRadius + _handleSkin)
             {
                 _isDraggingOutHandle = true;

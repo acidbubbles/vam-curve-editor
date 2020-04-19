@@ -47,10 +47,13 @@ namespace CurveEditor.UI
 
             var min = _viewMatrixInv.MultiplyPoint3x4(Vector2.zero).xy();
             var max = _viewMatrixInv.MultiplyPoint3x4(rectTransform.sizeDelta).xy();
-            var viewBounds = new Bounds((min + max) / 2, max - min);
+            var viewBounds = new Bounds((min + max) / 2f, max - min);
+
+            var maxT = _lines.Count > 0 ? _lines[0].curve[_lines[0].curve.length - 1].time : 1f;
+            var maxY = 0.25f;
 
             foreach (var line in _lines)
-                line.PopulateMesh(vh, _viewMatrix, viewBounds);
+                line.PopulateMesh(vh, _viewMatrix, viewBounds, maxT, line.maxY);
 
             if (_showScrubbers)
             {
@@ -60,7 +63,7 @@ namespace CurveEditor.UI
                     if (kv.Value < min.x || kv.Value > max.x)
                         continue;
 
-                    vh.DrawLine(new Vector2(kv.Value, min.y), new Vector2(kv.Value, max.y), 0.02f, Color.black, _viewMatrix);
+                    vh.DrawLine(new Vector2(kv.Value / maxT * viewBounds.max.x, min.y), new Vector2(kv.Value / maxT * viewBounds.max.x, max.y), 0.02f, Color.black, _viewMatrix);
                 }
 
                 foreach (var kv in _scrubberPositions)
@@ -141,7 +144,7 @@ namespace CurveEditor.UI
         {
             foreach (var line in _lines)
                 line.SetSelectedPoint(null);
-            
+
             if (point != null)
             {
                 _lines.Remove(point.parent);

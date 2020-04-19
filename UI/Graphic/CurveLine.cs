@@ -13,7 +13,7 @@ namespace CurveEditor.UI
         private readonly IStorableAnimationCurve _storable;
         private readonly UICurveLineColors _colors;
         private CurveEditorPoint _selectedPoint;
-
+        public float maxY;
         public readonly List<CurveEditorPoint> points;
 
         public float thickness { get; set; } = 0.04f;
@@ -30,28 +30,28 @@ namespace CurveEditor.UI
             SetPointsFromCurve();
         }
 
-        public void PopulateMesh(VertexHelper vh, Matrix4x4 viewMatrix, Bounds viewBounds)
+        public void PopulateMesh(VertexHelper vh, Matrix4x4 viewMatrix, Bounds viewBounds, float maxT, float maxY)
         {
             var curvePoints = new List<Vector2>();
             var minT = viewBounds.min.x;
-            var maxT = viewBounds.max.x;
             for (var i = 0; i < evaluateCount; i++)
             {
                 var t = Mathf.Lerp(minT, maxT, (float)i / (evaluateCount - 1));
                 if (t < minT || t > maxT)
                     continue;
 
-                curvePoints.Add(new Vector2(t, curve.Evaluate(t)));
+                curvePoints.Add(new Vector2(t / maxT * viewBounds.max.x, curve.Evaluate(t) / maxY * viewBounds.max.y));
             }
 
             vh.DrawLine(curvePoints, thickness, _colors.lineColor, viewMatrix);
             foreach (var point in this.points)
             {
                 //TODO: point radius
-                if (point.position.x + 0.25f < minT || point.position.x - 0.25f > maxT)
-                    continue;
+                //TODO: Filter based on visibility
+                // if (point.position.x + 0.25f < minT || point.position.x - 0.25f > maxT)
+                //     continue;
 
-                point.PopulateMesh(vh, viewMatrix, viewBounds);
+                point.PopulateMesh(vh, viewMatrix, viewBounds, maxT, maxY);
             }
         }
 
