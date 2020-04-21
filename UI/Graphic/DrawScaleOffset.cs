@@ -8,15 +8,6 @@ namespace CurveEditor.UI
         public Vector2 offset { get; private set; } = new Vector2(0, 0);
         public Vector2 ratio { get; private set; } = new Vector2(1f, 1f);
 
-        public static DrawScaleOffset FromValueBounds(Bounds valueBounds)
-        {
-            return new DrawScaleOffset()
-            {
-                offset = -new Vector2(valueBounds.min.x / valueBounds.size.x, valueBounds.min.y / valueBounds.size.y),
-                ratio = new Vector2(1f / valueBounds.size.x, 1f / valueBounds.size.y)
-            };
-        }
-
         public static DrawScaleOffset FromViewBounds(Bounds valueBounds, Bounds viewBounds)
         {
             return new DrawScaleOffset()

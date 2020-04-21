@@ -317,12 +317,12 @@ namespace CurveEditor.UI
             var valueMax = new Vector2(maxX == minX ? minX + 1f : maxX, maxY == minY ? minY + 1f : maxY);
             var valueBounds = new Bounds((valueMax + valueMin) / 2, valueMax - valueMin);
 
-            var viewMin = _viewMatrixInv.MultiplyPoint2d(Vector2.zero);
-            var viewMax = _viewMatrixInv.MultiplyPoint2d(rectTransform.sizeDelta);
-            var viewBounds = new Bounds((viewMin + viewMax) / 2, viewMax - viewMin);
+            var viewBounds = GetViewBounds();
 
             foreach (var line in _lines)
+            {
                 line.drawScale = DrawScaleOffset.FromViewBounds(valueBounds, viewBounds);
+            }
 
             _cameraPosition = Vector2.zero;
             UpdateViewMatrix();
@@ -335,7 +335,7 @@ namespace CurveEditor.UI
             if (!_storableToLineMap.TryGetValue(storable, out line))
                 return;
 
-            line.drawScale = DrawScaleOffset.FromValueBounds(new Bounds((max + min) / 2, max - min));
+            line.drawScale = DrawScaleOffset.FromViewBounds(new Bounds((max + min) / 2, max - min), GetViewBounds());
             SetVerticesDirty();
         }
 
@@ -425,6 +425,14 @@ namespace CurveEditor.UI
 
             position = localPosition;
             return true;
+        }
+
+        private Bounds GetViewBounds()
+        {
+            var viewMin = _viewMatrixInv.MultiplyPoint2d(Vector2.zero);
+            var viewMax = _viewMatrixInv.MultiplyPoint2d(rectTransform.sizeDelta);
+            var viewBounds = new Bounds((viewMin + viewMax) / 2, viewMax - viewMin);
+            return viewBounds;
         }
     }
 }
