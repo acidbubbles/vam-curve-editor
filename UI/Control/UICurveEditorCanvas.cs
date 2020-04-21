@@ -329,13 +329,14 @@ namespace CurveEditor.UI
             SetVerticesDirty();
         }
 
-        public void SetValueBounds(IStorableAnimationCurve storable, Vector2 min, Vector2 max)
+        public void SetValueBounds(IStorableAnimationCurve storable, Vector2 valueMin, Vector2 valueMax)
         {
             CurveLine line;
             if (!_storableToLineMap.TryGetValue(storable, out line))
                 return;
 
-            line.drawScale = DrawScaleOffset.FromViewBounds(new Bounds((max + min) / 2, max - min), GetViewBounds());
+            line.drawScale = DrawScaleOffset.FromViewBounds(new Bounds((valueMax + valueMin) / 2, valueMax - valueMin), GetViewBounds());
+            UpdateViewMatrix();
             SetVerticesDirty();
         }
 
