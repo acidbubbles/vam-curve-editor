@@ -23,9 +23,9 @@ namespace CurveEditor
                     _animation = containingAtom.GetComponent<Animation>() ?? containingAtom.gameObject.AddComponent<Animation>();
 
                 _curve1JSON = new JSONStorableAnimationCurve("Curve 1", CurveUpdated);
-                _curve1JSON.val = AnimationCurve.Linear(0, 0, 2, 0);
+                _curve1JSON.val = AnimationCurve.Linear(0, 0, 2, 10);
                 _curve2JSON = new JSONStorableAnimationCurve("Curve 2", CurveUpdated);
-                _curve2JSON.val = AnimationCurve.EaseInOut(0, 0, 2, 0);
+                _curve2JSON.val = AnimationCurve.EaseInOut(0, 1, 2, 0);
 
                 CreateUI();
             }
@@ -65,7 +65,7 @@ namespace CurveEditor
 
             _curveEditor = new UICurveEditor(container, 520, container.height, buttons: curveEditorButtons);
             _curveEditor.AddCurve(_curve1JSON, UICurveLineColors.CreateFrom(new Color(0.388f, 0.698f, 0.890f)));
-            _curveEditor.SetValueBounds(_curve1JSON, Vector2.zero, new Vector2(2, 1f));
+            _curveEditor.SetValueBounds(_curve1JSON, Vector2.zero, new Vector2(2, 10f));
             _curveEditor.AddCurve(_curve2JSON, UICurveLineColors.CreateFrom(new Color(0.890f, 0.388f, 0.398f)));
             _curveEditor.SetValueBounds(_curve2JSON, Vector2.zero, new Vector2(2, 1f));
 
