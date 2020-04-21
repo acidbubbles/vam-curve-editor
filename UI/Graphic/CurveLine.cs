@@ -36,7 +36,7 @@ namespace CurveEditor.UI
 
         public void PopulateMesh(VertexHelper vh, Matrix4x4 viewMatrix, Bounds viewBounds)
         {
-            var curvePoints = new List<Vector2>();
+            var curvePoints = new Vector2[evaluateCount];
             var minT = _drawScale.Reverse(viewBounds.min).x;
             var maxT = _drawScale.Reverse(viewBounds.max).x;
             for (var i = 0; i < evaluateCount; i++)
@@ -47,7 +47,7 @@ namespace CurveEditor.UI
                     continue;
 
                 var point = _drawScale.Apply(new Vector2(t, curve.Evaluate(t)));
-                curvePoints.Add(point);
+                curvePoints[i] = point;
             }
 
             vh.AddLine(curvePoints, thickness, _colors.lineColor, viewMatrix);
@@ -143,6 +143,7 @@ namespace CurveEditor.UI
 
         public void SetPointsFromCurve()
         {
+            points.Capacity = curve.length;
             while (points.Count > curve.length)
                 DestroyPoint(points[0]);
             while (points.Count < curve.length)

@@ -35,9 +35,9 @@ namespace CurveEditor.UI
         }
 
         public static void AddLine(this VertexHelper vh, Vector2 from, Vector2 to, float thickness, Color color, Matrix4x4 viewMatrix)
-            => AddLine(vh, new List<Vector2> { from, to }, thickness, color, viewMatrix);
+            => AddLine(vh, new [] { from, to }, thickness, color, viewMatrix);
 
-        public static void AddLine(this VertexHelper vh, List<Vector2> points, float thickness, Color color, Matrix4x4 viewMatrix)
+        public static void AddLine(this VertexHelper vh, IList<Vector2> points, float thickness, Color color, Matrix4x4 viewMatrix)
         {
             if (points == null || points.Count < 2)
                 return;
