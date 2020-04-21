@@ -314,7 +314,7 @@ namespace CurveEditor.UI
             }
 
             var valueMin = new Vector2(minX, minY);
-            var valueMax = new Vector2(maxX, maxY);
+            var valueMax = new Vector2(maxX == minX ? minX + 1f : maxX, maxY == minY ? minY + 1f : maxY);
             var valueBounds = new Bounds((valueMax + valueMin) / 2, valueMax - valueMin);
 
             var viewMin = _viewMatrixInv.MultiplyPoint2d(Vector2.zero);
